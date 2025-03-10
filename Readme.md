@@ -137,7 +137,11 @@ The `gmod-viewer` React.js app uses **Three.js** to visualize crime scenes with 
 - **Privacy Compliance**: Ensures sensitive forensic data is protected.
 
 ## 👨‍💻 Contributors
-- **Your Name** – Developer & ML Engineer
+- **Emmanuel Matthew** 
+- **Mohan B**
+- **Swetha G**
+- **Wilson Bernard**
+
 - Open to contributions! Feel free to fork the repo and submit PRs.
 
 ## 📜 License
