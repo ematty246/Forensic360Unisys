@@ -62,7 +62,7 @@ def get_db_connection():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="Manu@2006",
+        password="12345678",
         database="unisys"
     )
 
