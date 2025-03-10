@@ -131,6 +131,15 @@ frontend/
 ## 📊 3D Crime Scene Reconstruction
 The `gmod-viewer` React.js app uses **Three.js** to visualize crime scenes with `.glb` 3D models.
 
+## Screenshots
+
+### Crime Cases
+![Crime Cases](screenshots/CrimeCases.jpg)
+
+### Wound Analysis
+![Wound Analysis](screenshots/WoundAnalysis.jpg)
+
+
 ## 🔒 Security & Privacy
 - **API Authentication**: To be implemented in production.
 - **Data Encryption**: Secure storage for crime case data.
