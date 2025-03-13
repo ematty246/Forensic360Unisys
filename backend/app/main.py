@@ -15,19 +15,17 @@ from PIL import Image
 import google.generativeai as genai
 from wound_analysis import estimate_wound_dimensions, analyze_wound
 
-# Suppress warnings
 warnings.simplefilter("ignore", category=FutureWarning)
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 
-# Initialize FastAPI
 app = FastAPI()
 
-# Initialize Gemini AI
-API_KEY = "AIzaSyCQASGfjG2MRxfdAhshw8S_GP5pcHGS4Ps"
+
+API_KEY = "YOUR-API-KEY"
 genai.configure(api_key=API_KEY)
 model_gemini = genai.GenerativeModel("gemini-1.5-pro")
 
-# Load trained CNN model
+
 class BloodSpatterModel(nn.Module):
     def __init__(self):
         super(BloodSpatterModel, self).__init__()
@@ -57,13 +55,13 @@ transform = transforms.Compose([
     transforms.ToTensor()
 ])
 
-# Database Connection Function
+
 def get_db_connection():
     return mysql.connector.connect(
         host="localhost",
-        user="root",
-        password="12345678",
-        database="unisys"
+        user="your-sql-username",
+        password="your-sql-password",
+        database="your-database-name"
     )
 
 class CaseCreate(BaseModel):
@@ -109,24 +107,21 @@ async def analyze_bloodstain(case_id: int, image: UploadFile = File(...)):
         db = get_db_connection()
         cursor = db.cursor()
 
-        # Check if case exists
+ 
         cursor.execute("SELECT case_id FROM crime_cases WHERE case_id = %s", (case_id,))
         case = cursor.fetchone()
         if not case:
             raise HTTPException(status_code=400, detail="Error: Case ID does not exist.")
 
-        # Read the image content
         image_content = await image.read()
 
-        # Save image temporarily for processing
+ 
         image_path = f"temp_{image.filename}"
         with open(image_path, "wb") as buffer:
             buffer.write(image_content)
 
-        # Open image for processing
         pil_image = Image.open(image_path).convert("RGB")
 
-        # Classify blood stain intensity using Gemini AI and CNN
         gemini_response = model_gemini.generate_content([
             "Analyze this crime scene image and classify blood stain intensity as 'Low', 'Moderate', or 'High'.", 
             pil_image
@@ -134,8 +129,7 @@ async def analyze_bloodstain(case_id: int, image: UploadFile = File(...)):
         gemini_classification = gemini_response.text.strip()
         cnn_classification = classify_blood_stain(pil_image)
         final_classification = gemini_classification if cnn_classification == gemini_classification else cnn_classification
-        
-        # Calculate blood loss
+
         blood_volume_lost = float(calculate_blood_loss_dynamic(image_path))
         wound_info, best_match = analyze_wound(image_path, wound_dataset_path)
         wound_dimensions = estimate_wound_dimensions(image_path, reference_length_mm=10)
@@ -145,10 +139,9 @@ async def analyze_bloodstain(case_id: int, image: UploadFile = File(...)):
         else:
             raise HTTPException(status_code=500, detail="Error: estimate_wound_dimensions did not return expected values.")
 
-        # Remove the temp image after processing
         os.remove(image_path)
 
-        # Store results in the database
+      
         sql = """INSERT INTO crime_analysis 
                  (case_id, blood_stain_intensity, blood_loss, wound_info, wound_width, wound_depth, best_match_image, image_data) 
                  VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"""
