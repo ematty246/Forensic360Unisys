@@ -69,7 +69,6 @@ class CaseCreate(BaseModel):
 
 @app.post("/cases/", summary="Create a new crime case", tags=["Cases"])
 def create_case(case: CaseCreate):
-    """Create a new crime case with a description."""
     try:
         db = get_db_connection()
         cursor = db.cursor()
