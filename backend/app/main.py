@@ -58,7 +58,7 @@ transform = transforms.Compose([
 
 def get_db_connection():
     return mysql.connector.connect(
-        host="localhost",
+        host="your-localhost",
         user="your-sql-username",
         password="your-sql-password",
         database="your-database-name"
