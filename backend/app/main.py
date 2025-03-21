@@ -33,7 +33,7 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers
 )
 # Initialize Gemini AI
-API_KEY = "AIzaSyCQASGfjG2MRxfdAhshw8S_GP5pcHGS4Ps"
+API_KEY = "YOUR-API-KEY"
 genai.configure(api_key=API_KEY)
 model_gemini = genai.GenerativeModel("gemini-1.5-pro")
 
@@ -71,9 +71,9 @@ transform = transforms.Compose([
 def get_db_connection():
     return mysql.connector.connect(
         host="localhost",
-        user="root",
-        password="Manu@2006",
-        database="unisys"
+        user="your-sql-username",
+        password="your-sql-password",
+        database="your-sql-database"
     )
 
 class CaseCreate(BaseModel):
